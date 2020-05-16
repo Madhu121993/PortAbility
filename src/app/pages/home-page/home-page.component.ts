@@ -2,7 +2,6 @@ import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { Http } from "@angular/http";
 import { Observable } from "rxjs/Rx";
-import { ToastrService } from "../toastr.service";
 import { config } from "../../config";
 
 @Component({
@@ -21,11 +20,12 @@ export class HomePageComponent implements OnInit {
   searchVal = "";
   constructor(
     private http: Http,
-    private router: Router,
-    private toastr: ToastrService
+    private router: Router
   ) {}
 
   ngOnInit() {
+
+    // select option of stock exchange
     this.options = [
       {
         exchange: "NASDAQ"
@@ -40,6 +40,7 @@ export class HomePageComponent implements OnInit {
         exchange: "FOREX"
       }
     ];
+    // select option of limit
     this.limits = [
       {
         limit: 5
@@ -48,6 +49,8 @@ export class HomePageComponent implements OnInit {
         limit: 10
       }
     ];
+
+    // Get data based on NASDAQ
     this.http
       .get(
         "https://financialmodelingprep.com/api/v3/search?query=AA&limit=10&exchange=NASDAQ"
@@ -62,10 +65,9 @@ export class HomePageComponent implements OnInit {
         this.arrayData = jsonData.slice(0, this.limit);
       });
   }
-
+ // Get data based on selection of stock exchange
   selectedExchange(event) {
     this.exchange = event.target.value;
-    console.log("onChange:", this.exchange);
     this.http
       .get(
         "https://financialmodelingprep.com/api/v3/search?query=AA&limit=10&exchange=" +
@@ -78,14 +80,13 @@ export class HomePageComponent implements OnInit {
       .subscribe(response => {
         var jsonData = response;
         this.data = jsonData.slice(0, this.limit);
-        console.log("data:", this.data);
         this.arrayData = jsonData.slice(0, this.limit);
         var filteredData = this.arrayData.filter(
           org =>
             org.name != null &&
             org.name.toLowerCase().startsWith(this.searchVal.toLowerCase())
         );
-        console.log("filteredData: ", filteredData);
+      
         this.data = filteredData;
         if (this.searchVal == "") {
           this.data = this.arrayData;
@@ -93,10 +94,9 @@ export class HomePageComponent implements OnInit {
       });
   }
 
+  // Get data based on selection of limit
   selectedLimit(event) {
     this.limit = Number(event.target.value);
-    console.log("this.limit: ", this.limit);
-    console.log("this.exchange:", this.exchange);
     this.http
       .get(
         "https://financialmodelingprep.com/api/v3/search?query=AA&limit=10&exchange=" +
@@ -110,8 +110,6 @@ export class HomePageComponent implements OnInit {
         var jsonData = response;
         this.data = jsonData.slice(0, this.limit);
         this.arrayData = jsonData.slice(0, this.limit);
-        console.log("this.data:", this.data);
-        console.log("this.searchVal: ", this.searchVal);
         var filteredData = this.arrayData.filter(
           org =>
             org.name != null &&
@@ -124,6 +122,7 @@ export class HomePageComponent implements OnInit {
       });
   }
 
+// download Statement
   generateCustomLink(value) {
     return (
       "https://financialmodelingprep.com/api/v3/financials/income-statement/" +
@@ -132,9 +131,9 @@ export class HomePageComponent implements OnInit {
     );
   }
 
+  // filter data based on name
   getData(val) {
     this.searchVal = val;
-    console.log("this.data:", this.data);
     var filteredData = this.arrayData.filter(
       org =>
         org.name != null &&
