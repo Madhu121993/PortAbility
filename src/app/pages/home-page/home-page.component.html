@@ -1,0 +1,22 @@
+<div class="col-md-12">
+    <div class = 'row'>
+    <div class="col-md-2"></div>
+    <div class="col-md-6" style = 'margin-top: 22%'>
+        <div id="uploadContainer" (click)="Upload.click()" >
+          <div class="row" style="margin-top:1%">
+              <div class="col-md-8">
+                  <label style="float: right;
+                  vertical-align: middle;"><b style="font-style:Helvetica Neue;color:#ADACB2">Add your CSV File here (.csv)</b></label>
+                  <div style="text-align: center">{{fileName}}</div>
+            </div>
+            <div class="col-md-4">
+                <label style="text-align: center;"><b style="font-style:Helvetica Neue;color:#0B66FC">Browse</b></label>
+          </div>
+          </div>  
+            <input hidden type="file" (change)="uploadedFile($event)" accept="application/csv" #Upload>
+          </div>
+          
+    </div>
+    <div class="col-md-2"></div>
+</div>
+</div>
