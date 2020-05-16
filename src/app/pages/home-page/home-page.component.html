@@ -1,31 +1,88 @@
-<div class = "container"><br><br>
+<div class="container">
+  <br /><br />
   <div class="row">
-      <table class ="table">
-        <thead class ="thead-dark">
-            <tr>
-                <th>Name</th>
-                <th>Symbol</th>
-                <th>Currency</th>
-                <th>Stock Exchange</th>
-                <th>Details</th>
-              </tr>
-        </thead>
-       <tbody *ngFor = "let val of data">
-          <tr>
-              <td>{{val.name}}</td>
-              <td>{{val.symbol}}</td>
-              <td>{{val.currency}}</td>
-              <td>{{val.stockExchange}}</td>
-              <td>Download Statement</td>
-              
-            </tr>
-       </tbody>
-       
-      </table>
-     
-      
-  
+    <div class="col-md-4">
+      <input
+        placeholder="Search Term"
+        type="text"
+        class="form-control"
+        (keyup)="getData($event.target.value)"
+        required
+      />
+    </div>
+    <div class="col-md-4">
+      <select class="form-control" (change)="selectedExchange($event)" required>
+        <option
+          class="option"
+          *ngFor="let option of options"
+          [value]="option.exchange"
+          >{{ option.exchange }}</option
+        >
+      </select>
+    </div>
+    <div class="col-md-4">
+      <select class="form-control" (change)="selectedLimit($event)" required>
+        <option
+          class="option"
+          *ngFor="let option of limits"
+          [value]="option.limit"
+          >{{ option.limit }}</option
+        >
+      </select>
+    </div>
+    <!-- <div class="col-md-3">
+      <button class="btn btn-primary">Search Company</button>
+    </div> -->
   </div>
-
+  <br /><br />
+  <div class="row">
+    <table class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th>Name</th>
+          <th>Symbol</th>
+          <th>Currency</th>
+          <th>Stock Exchange</th>
+          <th>Details</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let val of data">
+        <tr>
+          <td>
+            <span *ngIf="val.name !== null; else showdashForName">{{
+              val.name
+            }}</span>
+            <ng-template #showdashForName>
+              <span> ...</span>
+            </ng-template>
+          </td>
+          <td>
+            <span>{{ val.symbol }}</span>
+          </td>
+          <td>
+            <span *ngIf="val.currency !== null; else showdashForCurrency">{{
+              val.currency
+            }}</span>
+            <ng-template #showdashForCurrency>
+              <span> ...</span>
+            </ng-template>
+          </td>
+          <td>
+            <span
+              *ngIf="val.stockExchange !== null; else showdashForStockExchange"
+              >{{ val.stockExchange }}</span
+            >
+            <ng-template #showdashForStockExchange>
+              <span> ...</span>
+            </ng-template>
+          </td>
+          <td style="cursor: pointer;">
+            <a href="{{ generateCustomLink(val.symbol) }}" target="_blank"
+              >Download Statement</a
+            >
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
-
